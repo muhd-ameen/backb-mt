@@ -4,7 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:whakaaro/constants/const.dart';
 
 class CarouselSl extends StatefulWidget {
-  const CarouselSl({Key? key}) : super(key: key);
+  const CarouselSl({Key key}) : super(key: key);
 
   @override
   _CarouselSlState createState() => _CarouselSlState();

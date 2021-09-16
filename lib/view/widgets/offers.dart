@@ -11,12 +11,13 @@ class FoodItems extends StatefulWidget {
 
 class _FoodItemsState extends State<FoodItems> {
   final urlImages = [
-    'assets/images/food-1.png',
-    'assets/images/food-2.png',
-    'assets/images/food-1.png',
-    'assets/images/food-2.png',
-    'assets/images/food-1.png',
-    'assets/images/food-2.png',
+    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
+    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
+    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
+    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
+    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
+    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
+
   ];
 
   final hotels = [
@@ -33,6 +34,7 @@ class _FoodItemsState extends State<FoodItems> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
           CarouselSlider.builder(
@@ -40,9 +42,10 @@ class _FoodItemsState extends State<FoodItems> {
               options: CarouselOptions(
                 viewportFraction: 0.4,
                 // enlargeCenterPage: true,
-                initialPage: 0,
-                aspectRatio: 12 / 7,
-                // enableInfiniteScroll: false,
+                // initialPage: 0,
+                aspectRatio: 16.3 / 9,
+                enableInfiniteScroll: true,
+
                 onPageChanged: (index, reason) {
                   setState(() {
                     activeIndex = index;
@@ -54,7 +57,6 @@ class _FoodItemsState extends State<FoodItems> {
                 final hotel = hotels[index];
                 return foodScroll(urlImage, index, hotel);
               }),
-          SizedBox(height: 5),
         ],
       ),
     );
@@ -62,60 +64,61 @@ class _FoodItemsState extends State<FoodItems> {
 
   Widget foodScroll(String urlImage, int index, String hotel) {
     return Container(
-      margin: EdgeInsets.only(right: 10),
+      margin: EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Color(0xFF84FFA2),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      child: Container(
-        margin: EdgeInsets.all(10),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          child: Column(
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            child: Container(
+              child: Image.network(
+                urlImage,
+                height: 100,
+              ),
+            ),
+          ),
+          Stack(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                child: Image.asset(
-                  urlImage,
-                  fit: BoxFit.cover,
-                  height: 110,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Chicken Biryani',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: Color(0xff1F2937),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_on_rounded,
-                    color: kThemeColor,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Flexible(
-                    child: Text('$hotel',
+                padding: EdgeInsets.symmetric(vertical: 10),
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'STEAL THE DEAL',
                         style: TextStyle(
                           fontFamily: 'Montserrat',
-                          color: Color(0xFF6B7280),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11.0,
-                        )),
-                  )
-                ],
-              ),
+                          color: Color(0xff05B640),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13.0,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Flexible(
+                      child: Text(
+                        'exclusive offer@129'.toUpperCase(),
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: Color(0xFF505050),
+                          fontWeight: FontWeight.w900,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
-        ),
+        ],
       ),
     );
   }

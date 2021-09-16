@@ -1,17 +1,20 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whakaaro/view/widgets/offers.dart';
-import 'package:whakaaro/view/widgets/offersl.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,12 +40,13 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: FloatingActionButton(
+              backgroundColor: Colors.blueAccent,
               onPressed: () {},
               child: Icon(
                 Icons.add_call,
-                size: 20,
+                size: 16,
               ),
             ),
           )
@@ -61,6 +65,10 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.black54,
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                'https://whakaaro-development.s3.ap-south-1.amazonaws.com/restaurants%2F1628055065210Boofiya.png'),
+                            fit: BoxFit.cover),
                       ),
                       height: 130,
                       width: 115,
@@ -71,7 +79,149 @@ class _HomePageState extends State<HomePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Lulu Hypermarket',
+                        Text('Lulu Mall',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 17)),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.orange[800],
+                          ),
+                          height: 25,
+                          width: 55,
+                          child: Center(
+                            child: Text('Arabic',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text('1.2km | Lulu Mall,Edappaly',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14)),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text('45 mins. ₹120 for two .10:Am : 10:00Pm',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 12)),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.black54,
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                'https://whakaaro-development.s3.ap-south-1.amazonaws.com/restaurants%2F1628055065210Boofiya.png'),
+                            fit: BoxFit.cover),
+                      ),
+                      height: 130,
+                      width: 115,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Lulu Mall',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 17)),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.orange[800],
+                          ),
+                          height: 25,
+                          width: 55,
+                          child: Center(
+                            child: Text('Arabic',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text('1.2km | Lulu Mall,Edappaly',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14)),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text('45 mins. ₹120 for two .10:Am : 10:00Pm',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 12)),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+
+              Container(
+                alignment: Alignment.topLeft,
+                child: Text('Offers',
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20)),
+              ),
+              FoodItems(),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.black54,
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                'https://whakaaro-development.s3.ap-south-1.amazonaws.com/restaurants%2F1628055065210Boofiya.png'),
+                            fit: BoxFit.cover),
+                      ),
+                      height: 130,
+                      width: 115,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Lulu Mall',
                             style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w700,
@@ -116,13 +266,16 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 15),
                 child: Row(
                   children: [
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.black54,
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                'https://whakaaro-development.s3.ap-south-1.amazonaws.com/restaurants%2F1628055065210Boofiya.png'),
+                            fit: BoxFit.cover),
                       ),
                       height: 130,
                       width: 115,
@@ -133,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Lulu Hypermarket',
+                        Text('Lulu Mall',
                             style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w700,
@@ -149,7 +302,7 @@ class _HomePageState extends State<HomePage> {
                           height: 25,
                           width: 55,
                           child: Center(
-                            child: Text('Chinese',
+                            child: Text('Arabic',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -177,15 +330,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: Text('Offers',
-                    style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20)),
-              ),
-              // CarouselSl(),
             ],
           ),
         ),
@@ -196,22 +340,22 @@ class _HomePageState extends State<HomePage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.event_note_rounded,
+              Icons.roofing_outlined,
               color: Colors.green,
             ),
-            label: '',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.event_note_rounded,
+              Icons.search_outlined,
             ),
-            label: '',
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person_outline_outlined,
+              Icons.person_outlined,
             ),
-            label: '',
+            label: 'Profile',
           ),
         ],
       ),

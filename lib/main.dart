@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'whakaaro',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-    initialRoute: '/SignIn',
+    initialRoute: '/HomePage',
     routes: <String, WidgetBuilder>{
       '/SignIn': (BuildContext ctx) => SignIn(),
       '/HomePage': (BuildContext ctx) => HomePage(),
