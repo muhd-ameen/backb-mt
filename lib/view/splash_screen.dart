@@ -18,8 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   bool isLoggedIn;
-  printStatus(){
-    print('Login${isLoggedIn.toString()}');
+  printStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoggedIn = prefs.getBool('boolValue');
+    print('Is Login : ${isLoggedIn.toString()}');
     startTime();
   }
 
@@ -38,19 +40,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Container(),
                 ),
                 Lottie.asset('assets/animations/splash.json'),
-                //
-                // Image.asset(
-                //   'assets/images/m-text.png',
-                //   height: 60,
-                // ),
-
                 Expanded(
-                  flex: 5,
-                  child: Container(),
-                ),
-                // Image.asset('assets/images/m-text.png',height: 60,),
-                Expanded(
-                  flex: 1,
+                  flex: 6,
                   child: Container(),
                 ),
               ],
@@ -65,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
     isLoggedIn == false || isLoggedIn == null
         ? navigationPage('/SignIn')
         : navigationPage('/HomePage');
+
   }
 
   startTime() async {

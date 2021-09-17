@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whakaaro/constants/api_assets.dart';
 import 'package:whakaaro/constants/const.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,8 +22,7 @@ class _SignInState extends State<SignIn> {
     print(
       'username: $username || password: $password',
     );
-    var url = Uri.parse(
-      "https://whakaaro.backb.in/api/v1/auth/login/",
+    var url = Uri.parse(Strings.postUrl,
     );
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var body = {"username": "$username", "password": "$password"};
@@ -135,7 +135,7 @@ class _SignInState extends State<SignIn> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       padding:
-                          EdgeInsets.symmetric(vertical: 13, horizontal: 130),
+                          EdgeInsets.symmetric(vertical: 13, horizontal: 120),
                     ),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {

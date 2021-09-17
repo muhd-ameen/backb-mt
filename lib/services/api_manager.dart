@@ -6,18 +6,19 @@ import 'package:whakaaro/constants/api_assets.dart';
 import 'package:whakaaro/model/homePage_model.dart';
 import 'package:whakaaro/view/HomePage.dart';
 
+double lat;
+double long;
+
 class ApiManager {
   var homeModel;
   Future<HomeModel> fetchData() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      token = prefs.getString('token');
-      print('api class token : $token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('token');
     try {
       final response = await http.get(
         Uri.parse(Strings.getUrl),
         headers: {
-          HttpHeaders.authorizationHeader:
-          'Bearer ${token.toString()}',
+          HttpHeaders.authorizationHeader: 'Bearer ${token.toString()}',
         },
       );
       if (response.statusCode == 200) {
@@ -26,7 +27,9 @@ class ApiManager {
         var jsonString = response.body;
         var jsonMap = json.decode(jsonString);
         homeModel = HomeModel.fromJson(jsonMap);
-      }else{
+        long = jsonMap["data"]["branch"]["location"]["coordinates"][0];
+        lat = jsonMap["data"]["branch"]["location"]["coordinates"][1];
+      } else {
         print(response.statusCode);
         print(response.body);
       }

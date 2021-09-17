@@ -30,26 +30,26 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _homeModel = ApiManager().fetchData();
     getToken();
     getAddress();
-    _homeModel = ApiManager().fetchData();
   }
 
-  String add1;
-  String add2;
-  String add3;
+  String subLocality;
+  String adminArea;
+  String locality;
 
   getAddress() async {
     final coordinates = new Coordinates(10.050227, 76.318962);
     var address =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     setState(() {
-      add1 = address.first.subLocality;
-      add2 = address.first.adminArea;
-      add3 = address.first.locality;
+      subLocality = address.first.subLocality;
+      adminArea = address.first.adminArea;
+      locality = address.first.locality;
     });
 
-    print('$add1, $add2,$add3');
+    print('$subLocality, $adminArea,$locality');
   }
 
   @override
@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 1,
         backgroundColor: Colors.white,
         leading: Image.asset('assets/images/locationIcon.png'),
+
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
                     fontSize: 15)),
-            Text('$add1, $add3, $add2',
+            Text('$subLocality, $adminArea, $locality',
                 style: TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w600,
@@ -111,7 +112,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               //Listview : Top
-
               FutureBuilder<HomeModel>(
                 future: _homeModel,
                 builder: (context, snapshot) {
@@ -239,13 +239,8 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
-                      // scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      // primary: false,
-
-                      // physics: const BouncingScrollPhysics(
-                      //     parent: AlwaysScrollableScrollPhysics()),
                       itemCount: snapshot.data.data.restaurant.length,
                       itemBuilder: (context, index) {
                         var restro = snapshot.data.data.restaurant[index];
@@ -355,7 +350,11 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
 
+      // bottomNavigationBar: BottomNavigationBar(
+      //   backgroundColor: Colors.white,
+      //   iconSize: 30,
       // bottomNavigationBar: BottomNavigationBar(
       //   backgroundColor: Colors.white,
       //   iconSize: 30,
@@ -381,6 +380,8 @@ class _HomePageState extends State<HomePage> {
       //     ),
       //   ],
       // ),
-    );
+    //     ],
+    //   ),
+    // );
   }
 }
