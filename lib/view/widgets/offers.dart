@@ -11,40 +11,13 @@ class FoodItems extends StatefulWidget {
 }
 
 class _FoodItemsState extends State<FoodItems> {
-  final urlImages = [
-    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
-    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
-    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
-    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
-    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
-    'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
-  ];
 
-  final hotels = [
-    'Ambrosia Hotel & Restaurant',
-    'Handi Restaurant, Chittagong',
-    'Ambrosia Hotel & Restaurant',
-    'Handi Restaurant, Chittagong',
-    'Ambrosia Hotel & Restaurant',
-    'Handi Restaurant, Chittagong',
-  ];
-  final colors = [
-    0xfffdffb6,
-    0xffdda15e,
-    0xff006d77,
-    0xffdfe7fd,
-    0xfffdffb6,
-    0xffdfe7fd,
-  ];
-
-  int activeIndex = 0;
 
   Future<HomeModel> _homeModel;
-
+  int activeIndex = 0;
   @override
   void initState() {
     super.initState();
-
     _homeModel = ApiManager().fetchData();
   }
 
@@ -133,7 +106,7 @@ class _FoodItemsState extends State<FoodItems> {
                     // aspectRatio: 16.3 / 9,
                     enableInfiniteScroll: true,
                     height: 200.1,
-                    // autoPlay: true,
+                    autoPlay: true,
                     onPageChanged: (index, reason) {
                       setState(() {
                         activeIndex = index;

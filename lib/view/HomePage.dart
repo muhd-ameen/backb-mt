@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [
-              //Listview
+              //Listview : Top
 
               FutureBuilder<HomeModel>(
                 future: _homeModel,
@@ -119,8 +119,7 @@ class _HomePageState extends State<HomePage> {
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: snapshot.data.data.quick.length,
                       itemBuilder: (context, index) {
                         var restro = snapshot.data.data.quick[index];
@@ -240,10 +239,13 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
-                      scrollDirection: Axis.vertical,
+                      // scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
+                      physics: NeverScrollableScrollPhysics(),
+                      // primary: false,
+
+                      // physics: const BouncingScrollPhysics(
+                      //     parent: AlwaysScrollableScrollPhysics()),
                       itemCount: snapshot.data.data.restaurant.length,
                       itemBuilder: (context, index) {
                         var restro = snapshot.data.data.restaurant[index];
