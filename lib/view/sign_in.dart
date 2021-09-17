@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whakaaro/constants/const.dart';
 import 'package:http/http.dart' as http;
-import 'package:whakaaro/model/login_model.dart';
-import 'package:whakaaro/model/progressHud.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key key}) : super(key: key);
@@ -14,23 +12,36 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  TextEditingController usernameController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isloading = false;
   var jsonResponse;
-  bool isApiCallProcess = false;
 
   signIn(String username, String password) async {
-    var url = Uri.parse("https://whakaaro.backb.in/api/v1/auth/login/");
+    print(
+      'username: $username || password: $password',
+    );
+    var url = Uri.parse(
+      "https://whakaaro.backb.in/api/v1/auth/login/",
+    );
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var body = {"username": username, "password": password};
-
-    var res = await http.post(url, body: body);
-    if (res.statusCode == 200) {
-      jsonResponse = json.decode(res.body);
-      print('Response Status : ${res.statusCode}');
-      print('Response Body : ${res.body}');
+    var body = {
+      "username":"$username",
+      "password":"$password"
+    };
+    var response = await http.post(
+        url,
+        body: json.encode(body),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        encoding: Encoding.getByName("utf-8")
+    );
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+      print('Response Status : ${response.statusCode}');
+      print('Response Body : ${response.body}');
       if (jsonResponse != null) {
         setState(() {
           _isloading = false;
@@ -43,50 +54,68 @@ class _SignInState extends State<SignIn> {
       setState(() {
         _isloading = false;
       });
-      print('Response Status : ${res.statusCode}');
-      print('Response Body : ${res.body}');
+      print('Response Status : ${response.statusCode}');
+      print('Response Body : ${response.body}');
     }
+    return response;
   }
 
-  LoginRequestModel requestModel;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    requestModel = new LoginRequestModel();
-  }
+  // Future<void> login() async {
+  //   if (passwordController.text.isNotEmpty &&
+  //       usernameController.text.isNotEmpty) {
+  //     var response = await http.post(
+  //         Uri.parse("https://whakaaro.backb.in/api/v1/auth/login/"),
+  //         body: ({
+  //           'username': usernameController.text,
+  //           'password': passwordController.text
+  //         }));
+  //     if (response.statusCode == 300) {
+  //       jsonResponse = json.decode(response.body);
+  //
+  //       print('Response Status : ${response.statusCode}');
+  //       print('Response Body : ${response.body}');
+  //       Navigator.push(
+  //           context, MaterialPageRoute(builder: (context) => HomePage()));
+  //     } else {
+  //       ScaffoldMessenger.of(context)
+  //           .showSnackBar(SnackBar(content: Text('invalid credential')));
+  //
+  //       print('Response Status : ${response.statusCode}');
+  //       print('Response Body : ${response.body}');
+  //     }
+  //   } else {
+  //     ScaffoldMessenger.of(context)
+  //         .showSnackBar(SnackBar(content: Text('fields are blank')));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return ProgressHud(
-      child: builds(context),
-      inAsyncCall: isApiCallProcess,
-      opacity: 0.3,
-    );
-  }
-
-  @override
-  Widget builds(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 20,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Hero(
-                  tag: 'main',
-                  child: Image.asset(
-                    'assets/images/signin.png',
+          SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 8,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Hero(
+                    tag: 'main',
+                    child: Image.asset(
+                      'assets/images/food.jpg',
+                      height: 300,
+                      width: 300,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Container(
@@ -96,7 +125,6 @@ class _SignInState extends State<SignIn> {
               child: Column(
                 children: [
                   TextFormField(
-                    onSaved: (input) => requestModel.username = input,
                     keyboardType: TextInputType.phone,
                     textAlign: TextAlign.left,
                     decoration: kTextFieldDecoration.copyWith(
@@ -118,7 +146,6 @@ class _SignInState extends State<SignIn> {
                   TextFormField(
                     controller: passwordController,
                     keyboardType: TextInputType.phone,
-                    onSaved: (input) => requestModel.password = input,
                     textAlign: TextAlign.left,
                     // obscureText: true,
                     validator: (value) {
@@ -145,10 +172,10 @@ class _SignInState extends State<SignIn> {
                         setState(() {
                           _isloading = true;
                         });
+                        // login();
                         signIn(
                             usernameController.text, passwordController.text);
-                        print(
-                            'username ${usernameController.text} || ${passwordController.text}');
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
@@ -157,28 +184,6 @@ class _SignInState extends State<SignIn> {
                           const SnackBar(content: Text('Invalid Data')),
                         );
                       }
-                      // if (validateAndSave()) {
-                      //   setState(() {
-                      //     isApiCallProcess = true;
-                      //   });
-                      //
-                      //   ApiService apiServices = new ApiService();
-                      //   apiServices.login(requestModel).then((value) {
-                      //     setState(() {
-                      //       isApiCallProcess = false;
-                      //     });
-                      //     if (value.token.isNotEmpty) {
-                      //       ScaffoldMessenger.of(context).showSnackBar(
-                      //           SnackBar(content: Text('Login Successful')));
-                      //       print(value.token);
-                      //
-                      //     } else {
-                      //       ScaffoldMessenger.of(context).showSnackBar(
-                      //           SnackBar(content: Text(value.error)));
-                      //     }
-                      //   });
-                      //   print(requestModel.toJson());
-                      // }
                     },
                     color: Color(0xFF0065FF),
                     child: Text(
@@ -186,7 +191,6 @@ class _SignInState extends State<SignIn> {
                       style: TextStyle(fontSize: 15, color: Colors.white),
                     ),
                   ),
-                  SizedBox(height: 5),
                 ],
               ),
             ),
@@ -194,14 +198,5 @@ class _SignInState extends State<SignIn> {
         ],
       ),
     );
-  }
-
-  bool validateAndSave() {
-    final form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
   }
 }

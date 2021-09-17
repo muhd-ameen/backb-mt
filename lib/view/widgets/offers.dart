@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:whakaaro/constants/const.dart';
+import 'package:whakaaro/model/homePage_model.dart';
+import 'package:whakaaro/services/api_manager.dart';
 
 class FoodItems extends StatefulWidget {
   const FoodItems({key}) : super(key: key);
@@ -17,7 +18,6 @@ class _FoodItemsState extends State<FoodItems> {
     'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
     'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
     'https://whakaaro-development.s3.ap-south-1.amazonaws.com/offers/1630488143336offer1.png',
-
   ];
 
   final hotels = [
@@ -28,45 +28,73 @@ class _FoodItemsState extends State<FoodItems> {
     'Ambrosia Hotel & Restaurant',
     'Handi Restaurant, Chittagong',
   ];
+  final colors = [
+    0xfffdffb6,
+    0xffdda15e,
+    0xff006d77,
+    0xffdfe7fd,
+    0xfffdffb6,
+    0xffdfe7fd,
+  ];
 
   int activeIndex = 0;
+
+  Future<HomeModel> _homeModel;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _homeModel = ApiManager().fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 30),
       child: Column(
         children: [
-          CarouselSlider.builder(
-              itemCount: urlImages.length,
-              options: CarouselOptions(
-                viewportFraction: 0.4,
-                // enlargeCenterPage: true,
-                // initialPage: 0,
-                aspectRatio: 16.3 / 9,
-                enableInfiniteScroll: true,
+          FutureBuilder<HomeModel>(
+              future: _homeModel,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return CarouselSlider.builder(
 
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    activeIndex = index;
-                  });
-                },
-              ),
-              itemBuilder: (context, index, realIndex) {
-                final urlImage = urlImages[index];
-                final hotel = hotels[index];
-                return foodScroll(urlImage, index, hotel);
-              }),
+                      itemCount: urlImages.length,
+                      options: CarouselOptions(
+                        viewportFraction: 0.4,
+                        // enlargeCenterPage: true,
+                        // initialPage: 0,
+                        // aspectRatio: 16.3 / 9,
+                        enableInfiniteScroll: true,
+                        height: 200.1,
+                        autoPlay: true,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            activeIndex = index;
+                          });
+                        },
+                      ),
+                      itemBuilder: (context, index, realIndex) {
+                        final urlImage = urlImages[index];
+                        final hotel = hotels[index];
+                        final color = colors[index];
+                        return foodScroll(urlImage, index, hotel, color);
+                      });
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              })
         ],
       ),
     );
   }
 
-  Widget foodScroll(String urlImage, int index, String hotel) {
+  Widget foodScroll(String urlImage, int index, String hotel, int color) {
     return Container(
       margin: EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
-        color: Color(0xFF84FFA2),
+        color: Color(color),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
