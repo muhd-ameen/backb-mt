@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:whakaaro/constants/api_assets.dart';
 import 'package:whakaaro/constants/const.dart';
-import 'package:http/http.dart' as http;
+import 'package:whakaaro/services/api_manager.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key key}) : super(key: key);
@@ -16,40 +14,6 @@ class _SignInState extends State<SignIn> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  var jsonResponse;
-
-  signIn(String username, String password) async {
-    print(
-      'username: $username || password: $password',
-    );
-    var url = Uri.parse(Strings.postUrl,
-    );
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var body = {"username": "$username", "password": "$password"};
-    var response = await http.post(url,
-        body: json.encode(body),
-        headers: {"Content-Type": "application/json"},
-        encoding: Encoding.getByName("utf-8"));
-    if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
-      print('Response Status : ${response.statusCode}');
-      print('Response Body : ${response.body}');
-      if (jsonResponse != null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Login Successful')));
-        sharedPreferences.setString('token', jsonResponse['token']);
-        isLogged();
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/HomePage', (Route<dynamic> route) => false);
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Something went wrong')));
-      print('Response Status : ${response.statusCode}');
-      print('Response Body : ${response.body}');
-    }
-    return response;
-  }
 
   isLogged() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -139,8 +103,8 @@ class _SignInState extends State<SignIn> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        signIn(
-                            usernameController.text, passwordController.text);
+                        ApiManager().signIn(
+                            usernameController.text, passwordController.text,context);
                       }
                     },
                     child: Text(

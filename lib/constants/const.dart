@@ -36,3 +36,8 @@ const ColorFilter greyscale = ColorFilter.matrix(<double>[
   0,      0,      0,      1, 0,
 ]);
 
+const kGrey = const TextStyle(
+    color: Colors.black87,
+    fontWeight: FontWeight.w700,
+    fontSize: 20);
+

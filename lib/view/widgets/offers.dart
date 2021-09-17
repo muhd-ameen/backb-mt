@@ -23,7 +23,7 @@ class _FoodItemsState extends State<FoodItems> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 30),
+      padding: EdgeInsets.symmetric(vertical: 15),
       child: Column(
         children: [
           FutureBuilder<HomeModel>(
@@ -44,7 +44,6 @@ class _FoodItemsState extends State<FoodItems> {
                           child: Stack(
                             children: [
                               Container(
-
                                 padding: EdgeInsets.only(right: 20,left: 20),
                                 decoration: BoxDecoration(
                                   color: Color(
@@ -52,14 +51,12 @@ class _FoodItemsState extends State<FoodItems> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
-
                                 child: Image.network(
                                   offer.image.location,
                                   height: 100,
                                 ),
                                 width: 150,
                               ),
-
                               Positioned(
                                 child: Container(
                                   height: 40,
@@ -116,83 +113,18 @@ class _FoodItemsState extends State<FoodItems> {
                                 right: 10,
 
                               ),
-
                             ],
                           ),
                           height: 170,
                           padding: EdgeInsets.symmetric(horizontal: 8),
-
                         ),
-
-
                       ],
                     );
-                    // Container(
-                    //   margin: EdgeInsets.only(right: 15),
-                    //   decoration: BoxDecoration(
-                    //     color: Color(int.parse("0xFF" + "${secondary[1]}")),
-                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    //   ),
-                    //   child: Column(
-                    //     children: [
-                    //       ClipRRect(
-                    //         borderRadius: BorderRadius.all(Radius.circular(10)),
-                    //         child: Container(
-                    //           child: Image.network(
-                    //             offer.image.location,
-                    //             height: 100,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       Stack(
-                    //         children: [
-                    //           Container(
-                    //             padding: EdgeInsets.symmetric(vertical: 10),
-                    //             height: 100,
-                    //             width: MediaQuery.of(context).size.width,
-                    //             color: Colors.white,
-                    //             child: Column(
-                    //               children: [
-                    //                 Align(
-                    //                   alignment: Alignment.topLeft,
-                    //                   child: Text(
-                    //                     offer.title.toUpperCase(),
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Montserrat',
-                    //                       color: Color(int.parse(
-                    //                           "0xFF" + "${primary[1]}")),
-                    //                       fontWeight: FontWeight.w900,
-                    //                       fontSize: 12.0,
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //                 SizedBox(height: 8),
-                    //                 Align(
-                    //                   child: Text(
-                    //                     offer.subtitle.toUpperCase(),
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Montserrat',
-                    //                       color: Color(0xFF323232),
-                    //                       fontWeight: FontWeight.w900,
-                    //                       fontSize: 15.0,
-                    //                     ),
-                    //                   ),
-                    //                   alignment: Alignment.centerLeft,
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
                   },
                   options: CarouselOptions(
                     viewportFraction: 0.4,
                     enableInfiniteScroll: true,
                     height: 200.1,
-                    // autoPlay: true,
                     onPageChanged: (index, reason) {
                       setState(() {
                         activeIndex = index;

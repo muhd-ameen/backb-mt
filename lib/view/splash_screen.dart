@@ -14,11 +14,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    printStatus();
+    checkLogin();
   }
 
   bool isLoggedIn;
-  printStatus() async {
+  checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isLoggedIn = prefs.getBool('boolValue');
     print('Is Login : ${isLoggedIn.toString()}');
