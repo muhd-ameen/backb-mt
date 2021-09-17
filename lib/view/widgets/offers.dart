@@ -55,97 +55,97 @@ class _FoodItemsState extends State<FoodItems> {
       child: Column(
         children: [
           FutureBuilder<HomeModel>(
-              future: _homeModel,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return CarouselSlider.builder(
+            future: _homeModel,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return CarouselSlider.builder(
+                  itemCount: snapshot.data.data.branch.offers.length,
+                  itemBuilder: (context, index, realIndex) {
+                    var offer = snapshot.data.data.branch.offers[index];
+                    var primary = offer.primary.split("#");
+                    var secondary = offer.secondary.split("#");
 
-                      itemCount: urlImages.length,
-                      options: CarouselOptions(
-                        viewportFraction: 0.4,
-                        // enlargeCenterPage: true,
-                        // initialPage: 0,
-                        // aspectRatio: 16.3 / 9,
-                        enableInfiniteScroll: true,
-                        height: 200.1,
-                        autoPlay: true,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            activeIndex = index;
-                          });
-                        },
+                    return Container(
+                      margin: EdgeInsets.only(right: 15),
+                      decoration: BoxDecoration(
+                        color: Color(int.parse("0xFF" + "${secondary[1]}")),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
-                      itemBuilder: (context, index, realIndex) {
-                        final urlImage = urlImages[index];
-                        final hotel = hotels[index];
-                        final color = colors[index];
-                        return foodScroll(urlImage, index, hotel, color);
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: Container(
+                              child: Image.network(
+                                offer.image.location,
+                                height: 100,
+                              ),
+                            ),
+                          ),
+                          Stack(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                height: 100,
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        offer.title.toUpperCase(),
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Color(int.parse(
+                                              "0xFF" + "${primary[1]}")),
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Align(
+                                      child: Text(
+                                        offer.subtitle.toUpperCase(),
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Color(0xFF323232),
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  options: CarouselOptions(
+                    viewportFraction: 0.4,
+                    // enlargeCenterPage: true,
+                    // initialPage: 0,
+                    // aspectRatio: 16.3 / 9,
+                    enableInfiniteScroll: true,
+                    height: 200.1,
+                    // autoPlay: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        activeIndex = index;
                       });
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              })
-        ],
-      ),
-    );
-  }
-
-  Widget foodScroll(String urlImage, int index, String hotel, int color) {
-    return Container(
-      margin: EdgeInsets.only(right: 15),
-      decoration: BoxDecoration(
-        color: Color(color),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: Container(
-              child: Image.network(
-                urlImage,
-                height: 100,
-              ),
-            ),
-          ),
-          Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                height: 100,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'STEAL THE DEAL',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          color: Color(0xff05B640),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Flexible(
-                      child: Text(
-                        'exclusive offer@129'.toUpperCase(),
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          color: Color(0xFF505050),
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15.0,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                    },
+                  ),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          )
         ],
       ),
     );

@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:whakaaro/constants/const.dart';
 import 'package:whakaaro/model/homePage_model.dart';
 import 'package:whakaaro/services/api_manager.dart';
 import 'package:whakaaro/view/widgets/offers.dart';
-import 'package:intl/intl.dart';
 
 var token;
 
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   String add3;
 
   getAddress() async {
-    final coordinates = new Coordinates(9.9312, 76.2673);
+    final coordinates = new Coordinates(10.050227, 76.318962);
     var address =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     setState(() {
@@ -78,13 +78,30 @@ class _HomePageState extends State<HomePage> {
         actions: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: FloatingActionButton(
-                backgroundColor: Colors.blueAccent,
-                onPressed: () => null,
-                child: Image.asset(
-                  'assets/icons/call.png',
-                  height: 23,
-                )),
+            child: FutureBuilder<HomeModel>(
+                future: _homeModel,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return FloatingActionButton(
+                        backgroundColor: Colors.blueAccent,
+                        onPressed: () async {
+                          var url =
+                              "tel:${snapshot.data.data.branch.supportNumber}";
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                          print(snapshot.data.data.branch.supportNumber);
+                        },
+                        child: Image.asset(
+                          'assets/icons/call.png',
+                          height: 23,
+                        ));
+                  } else {
+                    return Container();
+                  }
+                }),
           )
         ],
       ),
@@ -107,6 +124,7 @@ class _HomePageState extends State<HomePage> {
                       itemCount: snapshot.data.data.quick.length,
                       itemBuilder: (context, index) {
                         var restro = snapshot.data.data.quick[index];
+                        var distance = restro.distance.toString().split(".");
                         return Container(
                           padding: EdgeInsets.symmetric(vertical: 15),
                           child: Row(
@@ -179,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                                               fontWeight: FontWeight.w500,
                                               fontSize: 11))
                                       : Text(
-                                          '${restro.distance} km | ${restro.location.address}',
+                                          '${distance[0]} km | ${restro.location.address}',
                                           overflow: TextOverflow.clip,
                                           style: TextStyle(
                                               color: Colors.grey,
@@ -203,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     );
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return Center();
                   }
                 },
               ),
@@ -229,6 +247,8 @@ class _HomePageState extends State<HomePage> {
                       itemCount: snapshot.data.data.restaurant.length,
                       itemBuilder: (context, index) {
                         var restro = snapshot.data.data.restaurant[index];
+                        var distance = restro.distance.toString().split(".");
+
                         return Container(
                           padding: EdgeInsets.symmetric(vertical: 15),
                           child: Row(
@@ -301,7 +321,7 @@ class _HomePageState extends State<HomePage> {
                                               fontWeight: FontWeight.w500,
                                               fontSize: 11))
                                       : Text(
-                                          '${restro.distance} km | ${restro.location.address.trim()}',
+                                          '${distance[0]} km | ${restro.location.address.trim()}',
                                           overflow: TextOverflow.clip,
                                           style: TextStyle(
                                               color: Colors.grey,
@@ -325,7 +345,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     );
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return Center();
                   }
                 },
               ),
@@ -333,6 +353,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+
       // bottomNavigationBar: BottomNavigationBar(
       //   backgroundColor: Colors.white,
       //   iconSize: 30,

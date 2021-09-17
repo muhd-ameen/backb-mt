@@ -15,7 +15,6 @@ class _SignInState extends State<SignIn> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isloading = false;
   var jsonResponse;
 
   signIn(String username, String password) async {
@@ -26,68 +25,36 @@ class _SignInState extends State<SignIn> {
       "https://whakaaro.backb.in/api/v1/auth/login/",
     );
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var body = {
-      "username":"$username",
-      "password":"$password"
-    };
-    var response = await http.post(
-        url,
+    var body = {"username": "$username", "password": "$password"};
+    var response = await http.post(url,
         body: json.encode(body),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        encoding: Encoding.getByName("utf-8")
-    );
+        headers: {"Content-Type": "application/json"},
+        encoding: Encoding.getByName("utf-8"));
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print('Response Status : ${response.statusCode}');
       print('Response Body : ${response.body}');
       if (jsonResponse != null) {
-        setState(() {
-          _isloading = false;
-        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Login Successful')));
         sharedPreferences.setString('token', jsonResponse['token']);
+        isLogged();
         Navigator.pushNamedAndRemoveUntil(
             context, '/HomePage', (Route<dynamic> route) => false);
       }
     } else {
-      setState(() {
-        _isloading = false;
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Something went wrong')));
       print('Response Status : ${response.statusCode}');
       print('Response Body : ${response.body}');
     }
     return response;
   }
 
-  // Future<void> login() async {
-  //   if (passwordController.text.isNotEmpty &&
-  //       usernameController.text.isNotEmpty) {
-  //     var response = await http.post(
-  //         Uri.parse("https://whakaaro.backb.in/api/v1/auth/login/"),
-  //         body: ({
-  //           'username': usernameController.text,
-  //           'password': passwordController.text
-  //         }));
-  //     if (response.statusCode == 300) {
-  //       jsonResponse = json.decode(response.body);
-  //
-  //       print('Response Status : ${response.statusCode}');
-  //       print('Response Body : ${response.body}');
-  //       Navigator.push(
-  //           context, MaterialPageRoute(builder: (context) => HomePage()));
-  //     } else {
-  //       ScaffoldMessenger.of(context)
-  //           .showSnackBar(SnackBar(content: Text('invalid credential')));
-  //
-  //       print('Response Status : ${response.statusCode}');
-  //       print('Response Body : ${response.body}');
-  //     }
-  //   } else {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(SnackBar(content: Text('fields are blank')));
-  //   }
-  // }
+  isLogged() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('boolValue', true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,31 +128,21 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   SizedBox(height: 15),
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Color(0xFF0065FF),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 13, horizontal: 130),
                     ),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 13, horizontal: 130),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        // login();
                         signIn(
                             usernameController.text, passwordController.text);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Invalid Data')),
-                        );
                       }
                     },
-                    color: Color(0xFF0065FF),
                     child: Text(
                       'Sign In',
                       style: TextStyle(fontSize: 15, color: Colors.white),
