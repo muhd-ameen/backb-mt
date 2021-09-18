@@ -4,14 +4,14 @@ import 'package:whakaaro/model/homePage_model.dart';
 import 'package:whakaaro/services/api_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class FoodItems extends StatefulWidget {
-  const FoodItems({key}) : super(key: key);
+class OfferSlider extends StatefulWidget {
+  const OfferSlider({key}) : super(key: key);
 
   @override
-  _FoodItemsState createState() => _FoodItemsState();
+  _OfferSliderState createState() => _OfferSliderState();
 }
 
-class _FoodItemsState extends State<FoodItems> {
+class _OfferSliderState extends State<OfferSlider> {
   Future<HomeModel> _homeModel;
   int activeIndex = 0;
   @override
@@ -36,15 +36,13 @@ class _FoodItemsState extends State<FoodItems> {
                     var offer = snapshot.data.data.branch.offers[index];
                     var primary = offer.primary.split("#");
                     var secondary = offer.secondary.split("#");
-
                     return Column(
                       children: [
                         Container(
-
                           child: Stack(
                             children: [
                               Container(
-                                padding: EdgeInsets.only(right: 20,left: 20),
+                                padding: EdgeInsets.only(right: 20, left: 20),
                                 decoration: BoxDecoration(
                                   color: Color(
                                       int.parse("0xFF" + "${secondary[1]}")),
@@ -80,6 +78,7 @@ class _FoodItemsState extends State<FoodItems> {
                                       Align(
                                         child: Text(
                                           offer.subtitle.toUpperCase(),
+                                          overflow: TextOverflow.clip,
                                           style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             color: Color(0xFF323232),
@@ -109,9 +108,8 @@ class _FoodItemsState extends State<FoodItems> {
                                     ),
                                   ),
                                 ),
-                                bottom:50 ,
+                                bottom: 50,
                                 right: 10,
-
                               ),
                             ],
                           ),

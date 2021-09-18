@@ -6,11 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whakaaro/constants/api_assets.dart';
 import 'package:whakaaro/model/homePage_model.dart';
 import 'package:whakaaro/view/HomePage.dart';
-double lat;
-double long;
+
+
 class ApiManager {
+
+
+  double lat;
+  double long;
   var jsonResponse;
   var homeModel;
+
   Future<HomeModel> fetchData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token');
@@ -22,7 +27,7 @@ class ApiManager {
         },
       );
       if (response.statusCode == 200) {
-        print(response.statusCode);
+        print('Status code : ${response.statusCode}');
         var jsonString = response.body;
         var jsonMap = json.decode(jsonString);
         homeModel = HomeModel.fromJson(jsonMap);
@@ -37,15 +42,20 @@ class ApiManager {
     }
     return homeModel;
   }
+
+
+
   isLogged() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('boolValue', true);
   }
-  signIn(String username, String password,BuildContext context) async {
+
+  signIn(String username, String password, BuildContext context) async {
     print(
       'username: $username || password: $password',
     );
-    var url = Uri.parse(Strings.postUrl,
+    var url = Uri.parse(
+      Strings.postUrl,
     );
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var body = {"username": "$username", "password": "$password"};
@@ -65,13 +75,17 @@ class ApiManager {
         Navigator.pushNamedAndRemoveUntil(
             context, '/HomePage', (Route<dynamic> route) => false);
       }
+    } else if (response.statusCode == 401) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Invalid Credential')));
+      print('Response Status : ${response.statusCode}');
+      print('Response Body : ${response.body}');
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Something went wrong')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Something went wrong')));
       print('Response Status : ${response.statusCode}');
       print('Response Body : ${response.body}');
     }
     return response;
   }
-
 }

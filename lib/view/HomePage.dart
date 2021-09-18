@@ -20,25 +20,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<HomeModel> _homeModel;
+
   String subLocality;
   String adminArea;
   String locality;
+
   @override
   void initState() {
     super.initState();
     _homeModel = ApiManager().fetchData();
-    getAddress();
-  }
-
-  getAddress() async {
-    final coordinates = new Coordinates(10.050227, 76.318962);
-    var address =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    setState(() {
-      subLocality = address.first.subLocality;
-      adminArea = address.first.adminArea;
-      locality = address.first.locality;
-    });
+      getAddress();
   }
 
   @override
@@ -58,10 +49,10 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.w400,
                     fontSize: 15)),
             Text('$subLocality, $adminArea, $locality',
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16)),
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16)),
           ],
         ),
         actions: [
@@ -84,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Offers', style: kGrey),
               ),
               //CarouselSlider
-              FoodItems(),
+              OfferSlider(),
               //Restaurant list
               RestroList(homeModel: _homeModel),
             ],
@@ -92,5 +83,18 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+
+
+  getAddress() async {
+    final coordinates = new Coordinates(10.050227,76.318962);
+    var address =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    setState(() {
+      subLocality = address.first.subLocality;
+      adminArea = address.first.adminArea;
+      locality = address.first.locality;
+    });
   }
 }

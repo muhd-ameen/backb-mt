@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whakaaro/constants/const.dart';
 import 'package:whakaaro/services/api_manager.dart';
 
+
 class SignIn extends StatefulWidget {
   const SignIn({Key key}) : super(key: key);
 
@@ -19,6 +20,8 @@ class _SignInState extends State<SignIn> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('boolValue', true);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +81,7 @@ class _SignInState extends State<SignIn> {
                     controller: passwordController,
                     keyboardType: TextInputType.phone,
                     textAlign: TextAlign.left,
-                    // obscureText: true,
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';

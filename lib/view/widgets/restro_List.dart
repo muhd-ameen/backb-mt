@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:whakaaro/constants/const.dart';
 import 'package:whakaaro/model/homePage_model.dart';
 
@@ -22,7 +23,11 @@ class RestroList extends StatelessWidget {
             itemCount: snapshot.data.data.restaurant.length,
             itemBuilder: (context, index) {
               var restro = snapshot.data.data.restaurant[index];
-              var distance = restro.distance.toString().split(".");
+              var dis = restro.distance / 1000;
+              var dis1 = dis.toStringAsExponential(1);
+              var distance = dis1.toString().split("e");
+              DateTime now = DateTime.parse("2021-09-19 ${restro.closeTime}");
+              String closeTime = DateFormat.jm().format(now);
               return Container(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 child: Row(
@@ -104,13 +109,18 @@ class RestroList extends StatelessWidget {
                         SizedBox(
                           height: 8,
                         ),
-                        Text(
-                            '${restro.avgCookingTime} mins. ₹${int.parse(restro.avgPersonAmt) * 2}'
-                                ' for two . ${restro.openTime}:AM - ${restro.closeTime}PM',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 11)),
+                        Container(
+                          width: 230,
+                          child: Text(
+                              '${restro.avgCookingTime} mins. ₹${int.parse(restro.avgPersonAmt) * 2}'
+                                  ' for two . ${restro.openTime}:AM - $closeTime ',
+                              overflow: TextOverflow.fade,
+
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 11)),
+                        ),
                       ],
                     )
                   ],
