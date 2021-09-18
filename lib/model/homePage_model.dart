@@ -194,8 +194,8 @@ class Offer {
   String desc;
   String type;
   dynamic link;
-  Icon image;
-  Icon icon;
+  IconModel image;
+  IconModel icon;
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
     status: json["status"],
@@ -207,8 +207,8 @@ class Offer {
     desc: json["desc"],
     type: json["type"],
     link: json["link"],
-    image: Icon.fromJson(json["image"]),
-    icon: Icon.fromJson(json["icon"]),
+    image: IconModel.fromJson(json["image"]),
+    icon: IconModel.fromJson(json["icon"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -226,8 +226,8 @@ class Offer {
   };
 }
 
-class Icon {
-  Icon({
+class IconModel {
+  IconModel({
     this.mimetype,
     this.key,
     this.location,
@@ -237,7 +237,7 @@ class Icon {
   String key;
   String location;
 
-  factory Icon.fromJson(Map<String, dynamic> json) => Icon(
+  factory IconModel.fromJson(Map<String, dynamic> json) => IconModel(
     mimetype: json["mimetype"],
     key: json["key"],
     location: json["location"],

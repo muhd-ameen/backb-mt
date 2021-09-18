@@ -9,6 +9,8 @@ import 'package:whakaaro/view/widgets/offers.dart';
 import 'package:whakaaro/view/widgets/quick_list.dart';
 import 'package:whakaaro/view/widgets/restro_List.dart';
 
+import 'widgets/bottomNavigation.dart';
+
 var token;
 
 class HomePage extends StatefulWidget {
@@ -29,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _homeModel = ApiManager().fetchData();
-      getAddress();
+    getAddress();
   }
 
   @override
@@ -49,10 +51,10 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.w400,
                     fontSize: 15)),
             Text('$subLocality, $adminArea, $locality',
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16)),
+                style: TextStyle(
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16)),
           ],
         ),
         actions: [
@@ -62,6 +64,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+      bottomNavigationBar: BottomNavigation(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -85,10 +88,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
-
   getAddress() async {
-    final coordinates = new Coordinates(10.050227,76.318962);
+    final coordinates = new Coordinates(10.050227, 76.318962);
     var address =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     setState(() {
@@ -98,3 +99,4 @@ class _HomePageState extends State<HomePage> {
     });
   }
 }
+
