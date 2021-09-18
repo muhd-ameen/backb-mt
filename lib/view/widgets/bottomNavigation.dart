@@ -33,11 +33,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: new Icon(Icons.shopping_bag_outlined),
-          label: 'Search',
+          label: 'Cart',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outlined),
-          label: 'Cart',
+          label: 'Profile',
         ),
       ],
     );
